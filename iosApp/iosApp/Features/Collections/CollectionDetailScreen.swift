@@ -5,44 +5,37 @@ struct CollectionDetailScreen: View {
     @StateObject private var viewModel: CollectionDetailViewModelOwner
     @EnvironmentObject private var comparisonState: ComparisonState
     @Environment(\.horizontalSizeClass) private var sizeClass
-    @State private var navigationPath = NavigationPath()
+    @Binding var navigationPath: NavigationPath
     @State private var showMoveSheet = false
 
     private var columns: [GridItem] {
         AdaptiveGrid.columns(userPreference: 2, sizeClass: sizeClass)
     }
 
-    init(collectionId: Int64, collectionName: String) {
+    init(collectionId: Int64, collectionName: String, navigationPath: Binding<NavigationPath>) {
         _viewModel = StateObject(
             wrappedValue: CollectionDetailViewModelOwner(collectionId: collectionId)
         )
+        _navigationPath = navigationPath
     }
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
-            VStack(spacing: 0) {
-                sortFilterBar
-                if viewModel.displayModels.isEmpty {
-                    emptyView
-                } else {
-                    modelsGrid
-                }
-            }
-            .navigationTitle(viewModel.isSelectionMode
-                ? "\(viewModel.selectedIds.count) selected"
-                : "Collection")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbarContent }
-            .navigationDestination(for: Int64.self) { modelId in
-                ModelDetailScreen(modelId: modelId)
-            }
-            .navigationDestination(for: CompareDestination.self) { dest in
-                ModelCompareScreen(
-                    leftModelId: dest.leftModelId,
-                    rightModelId: dest.rightModelId
-                )
+        // Pushed onto the Collections stack - owning a NavigationStack here nested a
+        // second stack inside it and the parent path was reset on appear, bouncing the
+        // user straight back to the collections list.
+        VStack(spacing: 0) {
+            sortFilterBar
+            if viewModel.displayModels.isEmpty {
+                emptyView
+            } else {
+                modelsGrid
             }
         }
+        .navigationTitle(viewModel.isSelectionMode
+            ? "\(viewModel.selectedIds.count) selected"
+            : "Collection")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar { toolbarContent }
         .overlay(alignment: .bottom) {
             if viewModel.isSelectionMode && !viewModel.selectedIds.isEmpty {
                 selectionBar

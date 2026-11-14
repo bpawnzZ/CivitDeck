@@ -56,7 +56,8 @@ struct CollectionsScreen: View {
             .navigationDestination(for: CollectionDestination.self) { dest in
                 CollectionDetailScreen(
                     collectionId: dest.collectionId,
-                    collectionName: dest.collectionName
+                    collectionName: dest.collectionName,
+                    navigationPath: $navigationPath
                 )
             }
             .navigationDestination(for: Int64.self) { modelId in

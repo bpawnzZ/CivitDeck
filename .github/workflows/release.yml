@@ -198,6 +198,15 @@ jobs:
           key: konan-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml') }}
           restore-keys: konan-${{ runner.os }}-
 
+      # Info.plist hardcodes 2.5/10, which would make every release the same
+      # bundle version - SideStore then refuses the update as already installed.
+      - name: Stamp version into Info.plist
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then VERSION="${GITHUB_REF_NAME#v}"; else VERSION="0.0.$GITHUB_RUN_NUMBER"; fi
+          plutil -replace CFBundleShortVersionString -string "$VERSION" iosApp/iosApp/Info.plist
+          plutil -replace CFBundleVersion -string "$GITHUB_RUN_NUMBER" iosApp/iosApp/Info.plist
+
       - name: Build unsigned .app
         run: |
           set -euo pipefail
@@ -220,8 +229,7 @@ jobs:
         run: |
           set -euo pipefail
           DERIVED="$RUNNER_TEMP/DerivedData"
-          VERSION="${GITHUB_REF_NAME#v}"
-          [ "$GITHUB_REF_TYPE" = "tag" ] || VERSION="0.0.0-$(git rev-parse --short HEAD)"
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then VERSION="${GITHUB_REF_NAME#v}"; else VERSION="0.0.$GITHUB_RUN_NUMBER"; fi
           APP=$(find "$DERIVED/Build/Products/Release-iphoneos" -maxdepth 1 -name '*.app' -print -quit)
           [ -n "$APP" ] || { echo '::error::no .app produced - refusing to package an empty IPA'; exit 1; }
           STAGE="$RUNNER_TEMP/ipa"; rm -rf "$STAGE"; mkdir -p "$STAGE/Payload"
@@ -237,8 +245,8 @@ jobs:
             *Payload/*.app/*) ;;
             *) echo '::error::Payload has no .app - refusing to upload'; exit 1 ;;
           esac
-          stat -c%s "$IPA"
-          sha256sum "$IPA" > "$IPA.sha256"
+          echo "IPA size: $(wc -c < "$IPA") bytes"
+          shasum -a 256 "$IPA" > "$IPA.sha256"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

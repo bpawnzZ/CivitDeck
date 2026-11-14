@@ -6,11 +6,16 @@ import com.riox432.civitdeck.domain.repository.ModelDownloadRepository
 import com.riox432.civitdeck.domain.util.ApplicationScope
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.MockRequestHandleScope
 import io.ktor.client.engine.mock.respond
+import io.ktor.client.request.HttpRequestData
+import io.ktor.client.request.HttpResponseData
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import java.io.File
@@ -35,16 +40,27 @@ class DesktopDownloadSchedulerTest {
         expectedSha256 = expectedSha256,
     )
 
+    /**
+     * Mock client whose engine runs on the test scheduler. The engine default is a real IO
+     * dispatcher, so `advanceUntilIdle()` returns before the transfer finishes and every
+     * assertion below sees status `Downloading` instead of the final state.
+     */
+    private fun TestScope.client(
+        handler: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData,
+    ): HttpClient = HttpClient(
+        MockEngine.create {
+            dispatcher = StandardTestDispatcher(testScheduler)
+            addHandler(handler)
+        },
+    )
+
     @Test
     fun enqueue_downloads_file_and_marks_completed() = runTest {
         val repository = FakeModelDownloadRepository(download())
         val tempDir = createTempDirectory()
-        val engine = MockEngine {
-            respond(content = ByteReadChannel(FILE_BYTES), status = HttpStatusCode.OK)
-        }
         val scheduler = DesktopDownloadScheduler(
             repository = repository,
-            httpClient = HttpClient(engine),
+            httpClient = client { respond(content = ByteReadChannel(FILE_BYTES), status = HttpStatusCode.OK) },
             scope = ApplicationScope(this),
             downloadRoot = { tempDir },
         )
@@ -63,16 +79,15 @@ class DesktopDownloadSchedulerTest {
     fun enqueue_marks_failed_with_http_status_on_error_response() = runTest {
         val repository = FakeModelDownloadRepository(download())
         val tempDir = createTempDirectory()
-        val engine = MockEngine {
-            respond(
-                content = ByteReadChannel(ByteArray(0)),
-                status = HttpStatusCode.Unauthorized,
-                headers = headersOf(),
-            )
-        }
         val scheduler = DesktopDownloadScheduler(
             repository = repository,
-            httpClient = HttpClient(engine),
+            httpClient = client {
+                respond(
+                    content = ByteReadChannel(ByteArray(0)),
+                    status = HttpStatusCode.Unauthorized,
+                    headers = headersOf(),
+                )
+            },
             scope = ApplicationScope(this),
             downloadRoot = { tempDir },
         )
@@ -89,12 +104,9 @@ class DesktopDownloadSchedulerTest {
     fun enqueue_marks_failed_when_hash_does_not_match() = runTest {
         val repository = FakeModelDownloadRepository(download(expectedSha256 = "deadbeef"))
         val tempDir = createTempDirectory()
-        val engine = MockEngine {
-            respond(content = ByteReadChannel(FILE_BYTES), status = HttpStatusCode.OK)
-        }
         val scheduler = DesktopDownloadScheduler(
             repository = repository,
-            httpClient = HttpClient(engine),
+            httpClient = client { respond(content = ByteReadChannel(FILE_BYTES), status = HttpStatusCode.OK) },
             scope = ApplicationScope(this),
             downloadRoot = { tempDir },
         )
@@ -112,13 +124,12 @@ class DesktopDownloadSchedulerTest {
         val repository = FakeModelDownloadRepository(download())
         val tempDir = createTempDirectory()
         var requestCount = 0
-        val engine = MockEngine {
-            requestCount++
-            respond(content = ByteReadChannel(FILE_BYTES), status = HttpStatusCode.OK)
-        }
         val scheduler = DesktopDownloadScheduler(
             repository = repository,
-            httpClient = HttpClient(engine),
+            httpClient = client {
+                requestCount++
+                respond(content = ByteReadChannel(FILE_BYTES), status = HttpStatusCode.OK)
+            },
             scope = ApplicationScope(this),
             downloadRoot = { tempDir },
         )
@@ -138,7 +149,7 @@ class DesktopDownloadSchedulerTest {
         val repository = FakeModelDownloadRepository(download())
         val scheduler = DesktopDownloadScheduler(
             repository = repository,
-            httpClient = HttpClient(MockEngine { respond("") }),
+            httpClient = client { respond("") },
             scope = ApplicationScope(this),
             downloadRoot = { createTempDirectory() },
         )

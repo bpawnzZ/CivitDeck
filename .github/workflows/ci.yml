@@ -192,6 +192,7 @@ jobs:
       - name: Test dataset ZIP readiness and transactions
         run: >-
           ./gradlew :shared:jvmTest
+          --tests '*DesktopDownloadSchedulerTest'
           --tests '*DatasetExportZipReadinessTest'
           --tests 'com.riox432.civitdeck.data.export.DatasetZipTransactionTest'
           --tests 'com.riox432.civitdeck.data.export.DatasetZipLifecycleTest'

@@ -1,9 +1,6 @@
 import SwiftUI
 import Shared
 
-typealias CivitArticle = Core_domainArticle
-typealias CivitArticleSort = Core_domainArticleSort
-
 /// Paged list of the site's articles.
 struct ArticleFeedScreen: View {
     @State private var viewModel = KoinHelper.shared.createArticleFeedViewModel()
@@ -26,7 +23,7 @@ struct ArticleFeedScreen: View {
 
     @ViewBuilder
     private func content(state: ArticleFeedUiState) -> some View {
-        let items = state.items as? [CivitArticle] ?? []
+        let items = state.items as? [Article] ?? []
 
         VStack(spacing: 0) {
             HStack {
@@ -96,7 +93,7 @@ struct ArticleFeedScreen: View {
 }
 
 private struct ArticleRow: View {
-    let article: CivitArticle
+    let article: Article
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.sm) {

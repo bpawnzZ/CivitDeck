@@ -2,8 +2,6 @@ import SwiftUI
 import WebKit
 import Shared
 
-typealias CivitArticleDetail = Core_domainArticleDetail
-
 /// Article reader: header plus the rendered HTML body.
 struct ArticleDetailScreen: View {
     @State private var viewModel: ArticleDetailViewModel

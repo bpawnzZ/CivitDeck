@@ -498,3 +498,15 @@ extension Core_domainModel {
             .map { $0.element }
     }
 }
+
+// Browse feeds (Images / Videos / Articles)
+typealias MediaContentType = Core_domainMediaContentType
+typealias MediaFeedViewModel = Feature_galleryMediaFeedViewModel
+typealias MediaFeedUiState = Feature_galleryMediaFeedUiState
+typealias Article = Core_domainArticle
+typealias ArticleSort = Core_domainArticleSort
+typealias ArticleDetail = Core_domainArticleDetail
+typealias ArticleFeedViewModel = Feature_articlesArticleFeedViewModel
+typealias ArticleFeedUiState = Feature_articlesArticleFeedUiState
+typealias ArticleDetailViewModel = Feature_articlesArticleDetailViewModel
+typealias ArticleDetailUiState = Feature_articlesArticleDetailUiState

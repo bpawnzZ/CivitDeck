@@ -17,8 +17,9 @@ permissions:
 jobs:
   # Build signed Android APK
   build-android:
-    # Signing secrets only exist on the upstream repo; a fork builds the rest.
-    if: ${{ !inputs.ios_only && secrets.RELEASE_KEYSTORE_BASE64 != '' }}
+    # Android signing secrets only exist on the upstream repo; a fork builds the rest.
+    # (secrets is not an allowed context in jobs.<id>.if, hence the owner check.)
+    if: ${{ !inputs.ios_only && github.repository_owner == 'rioX432' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

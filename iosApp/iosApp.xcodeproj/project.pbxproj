@@ -53,6 +53,11 @@
 		CDPL04012FCC0004000CD001 /* PluginDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDPL04002FCC0004000CD001 /* PluginDetailViewModel.swift */; };
 		CD0005012D000005000CD001 /* ImageGalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0005002D000005000CD001 /* ImageGalleryViewModel.swift */; };
 		CD0005032D000005000CD001 /* ImageGalleryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0005022D000005000CD001 /* ImageGalleryScreen.swift */; };
+		CD0000000000000000000001 /* BrowseContentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0000000000000000000001 /* BrowseContentScreen.swift */; };
+		CD0000000000000000000002 /* MediaFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0000000000000000000002 /* MediaFeedScreen.swift */; };
+		CD0000000000000000000003 /* VideoPlayerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0000000000000000000003 /* VideoPlayerContainer.swift */; };
+		CD0000000000000000000004 /* ArticleFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0000000000000000000004 /* ArticleFeedScreen.swift */; };
+		CD0000000000000000000005 /* ArticleDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0000000000000000000005 /* ArticleDetailScreen.swift */; };
 		CD0005052D000005000CD001 /* ImageViewerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0005042D000005000CD001 /* ImageViewerScreen.swift */; };
 		CD0005072D000005000CD001 /* MetadataSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0005062D000005000CD001 /* MetadataSheet.swift */; };
 		CD0006012D000006000CD001 /* CivitDeckColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0006002D000006000CD001 /* CivitDeckColors.swift */; };
@@ -233,6 +238,11 @@
 		CDPL04002FCC0004000CD001 /* PluginDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDetailViewModel.swift; sourceTree = "<group>"; };
 		CD0005002D000005000CD001 /* ImageGalleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryViewModel.swift; sourceTree = "<group>"; };
 		CD0005022D000005000CD001 /* ImageGalleryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryScreen.swift; sourceTree = "<group>"; };
+		CB0000000000000000000001 /* BrowseContentScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseContentScreen.swift; sourceTree = "<group>"; };
+		CB0000000000000000000002 /* MediaFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaFeedScreen.swift; sourceTree = "<group>"; };
+		CB0000000000000000000003 /* VideoPlayerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerContainer.swift; sourceTree = "<group>"; };
+		CB0000000000000000000004 /* ArticleFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFeedScreen.swift; sourceTree = "<group>"; };
+		CB0000000000000000000005 /* ArticleDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailScreen.swift; sourceTree = "<group>"; };
 		CD0005042D000005000CD001 /* ImageViewerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerScreen.swift; sourceTree = "<group>"; };
 		CDZM01002F000005000CD001 /* ZoomableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableImageView.swift; sourceTree = "<group>"; };
 		CD0005062D000005000CD001 /* MetadataSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataSheet.swift; sourceTree = "<group>"; };
@@ -513,6 +523,7 @@
 		CD0003002D000003000CD001 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				CB0000002F000005000CD001 /* Browse */,
 				CD0003012D000003000CD001 /* Search */,
 				CD00C00A2D3CC001000CD001 /* Collections */,
 				CD00CU0A2D8CC001000CD001 /* ComfyUI */,
@@ -752,6 +763,18 @@
 				CD0005062D000005000CD001 /* MetadataSheet.swift */,
 			);
 			path = Gallery;
+			sourceTree = "<group>";
+		};
+		CB0000002F000005000CD001 /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				CB0000000000000000000001 /* BrowseContentScreen.swift */,
+				CB0000000000000000000002 /* MediaFeedScreen.swift */,
+				CB0000000000000000000003 /* VideoPlayerContainer.swift */,
+				CB0000000000000000000004 /* ArticleFeedScreen.swift */,
+				CB0000000000000000000005 /* ArticleDetailScreen.swift */,
+			);
+			path = Browse;
 			sourceTree = "<group>";
 		};
 		CD0004042D000004000CD001 /* Detail */ = {
@@ -1001,6 +1024,11 @@
 				CDLNK0012D8CC442000CD001 /* CivitaiLinkSendSheet.swift in Sources */,
 				CD00DC012D0DD001000CD001 /* ModelDetailComponents.swift in Sources */,
 				CD0005012D000005000CD001 /* ImageGalleryViewModel.swift in Sources */,
+				CD0000000000000000000001 /* BrowseContentScreen.swift in Sources */,
+				CD0000000000000000000002 /* MediaFeedScreen.swift in Sources */,
+				CD0000000000000000000003 /* VideoPlayerContainer.swift in Sources */,
+				CD0000000000000000000004 /* ArticleFeedScreen.swift in Sources */,
+				CD0000000000000000000005 /* ArticleDetailScreen.swift in Sources */,
 				CD0005032D000005000CD001 /* ImageGalleryScreen.swift in Sources */,
 				CD0005052D000005000CD001 /* ImageViewerScreen.swift in Sources */,
 				CDZM01012F000005000CD001 /* ZoomableImageView.swift in Sources */,

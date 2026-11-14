@@ -63,6 +63,9 @@ struct CollectionsScreen: View {
             .navigationDestination(for: Int64.self) { modelId in
                 ModelDetailScreen(modelId: modelId)
             }
+            .navigationDestination(for: String.self) { username in
+                CreatorProfileScreen(username: username)
+            }
             .navigationDestination(for: CompareDestination.self) { dest in
                 ModelCompareScreen(
                     leftModelId: dest.leftModelId,

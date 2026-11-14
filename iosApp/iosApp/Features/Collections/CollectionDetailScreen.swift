@@ -142,30 +142,37 @@ struct CollectionDetailScreen: View {
         }
     }
 
+    private func handleGridTap(_ model: FavoriteModelSummary) {
+        if viewModel.isSelectionMode {
+            viewModel.toggleSelection(model.id)
+            return
+        }
+        if let cmpId = comparisonState.selectedModelId {
+            navigationPath.append(
+                CompareDestination(leftModelId: cmpId, rightModelId: model.id)
+            )
+            comparisonState.cancel()
+        }
+    }
+
     private var modelsGrid: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: Spacing.sm) {
                 ForEach(viewModel.displayModels, id: \.id) { model in
-                    Button {
-                        if viewModel.isSelectionMode {
-                            viewModel.toggleSelection(model.id)
-                        } else if let cmpId = comparisonState.selectedModelId {
-                            navigationPath.append(
-                                CompareDestination(
-                                    leftModelId: cmpId,
-                                    rightModelId: model.id
-                                )
-                            )
-                            comparisonState.cancel()
+                    let card = CollectionModelCard(
+                        model: model,
+                        isSelected: viewModel.selectedIds.contains(model.id),
+                        isSelectionMode: viewModel.isSelectionMode
+                    )
+                    // A plain NavigationLink pushes through the ambient stack; the previous
+                    // Button mutated the parent NavigationPath from inside a destination view
+                    // and the tap did nothing.
+                    Group {
+                        if viewModel.isSelectionMode || comparisonState.selectedModelId != nil {
+                            Button { handleGridTap(model) } label: { card }
                         } else {
-                            navigationPath.append(model.id)
+                            NavigationLink(value: model.id) { card }
                         }
-                    } label: {
-                        CollectionModelCard(
-                            model: model,
-                            isSelected: viewModel.selectedIds.contains(model.id),
-                            isSelectionMode: viewModel.isSelectionMode
-                        )
                     }
                     .buttonStyle(.plain)
                     .contextMenu {

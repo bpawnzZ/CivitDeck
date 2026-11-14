@@ -42,7 +42,7 @@ struct ContentView: View {
 
     private func tabLayout(shortcuts: [NavShortcut]) -> some View {
         TabView(selection: $selectedTabId) {
-            ModelSearchScreen(viewModel: searchViewModel)
+            BrowseContentScreen(searchViewModel: searchViewModel)
                 .tabItem { Label("Discover", systemImage: "magnifyingglass") }
                 .tag("discover")
 
@@ -96,7 +96,7 @@ struct ContentView: View {
             .navigationTitle("CivitDeck")
         } detail: {
             TabView(selection: $selectedTabId) {
-                ModelSearchScreen(viewModel: searchViewModel).tag("discover")
+                BrowseContentScreen(searchViewModel: searchViewModel).tag("discover")
                 CreateHubView().tag("create")
                 LibraryView().tag("library")
                 SettingsScreen().tag("settings")

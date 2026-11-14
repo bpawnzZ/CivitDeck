@@ -1,4 +1,26 @@
 import SwiftUI
+import Shared
+
+/// User's NSFW blur preferences, injected once at the app root.
+/// Browse cards read this instead of hardcoding per-level radii, so turning a
+/// level's blur down to 100% actually removes the blur everywhere.
+private struct CivitNsfwBlurKey: EnvironmentKey {
+    static let defaultValue = NsfwBlurSettings(softIntensity: 75, matureIntensity: 25, explicitIntensity: 0)
+}
+
+extension EnvironmentValues {
+    var civitNsfwBlur: NsfwBlurSettings {
+        get { self[CivitNsfwBlurKey.self] }
+        set { self[CivitNsfwBlurKey.self] = newValue }
+    }
+}
+
+extension NsfwBlurSettings {
+    /// Blur radius for a thumbnail; an unknown NSFW level never blurs.
+    func blurRadius(for level: NsfwLevel?) -> CGFloat {
+        CGFloat(blurRadiusFor(level: level ?? NsfwLevel.none))
+    }
+}
 
 /// Wraps content with a blur overlay based on a blur radius.
 /// Supports tap-to-reveal: tapping the blurred area temporarily removes the blur.

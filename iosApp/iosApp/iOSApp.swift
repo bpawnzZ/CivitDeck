@@ -37,6 +37,7 @@ struct iOSApp: App {
                 .task { await themeManager.observeAmoledDarkMode() }
                 .task { await themeManager.observeThemeMode() }
                 .task { await themeManager.observeActiveTheme() }
+                .task { await themeManager.observeNsfwBlur() }
                 .onOpenURL { url in
                     if let deepLink = DeepLinkHandler.handle(url) {
                         router.route(to: deepLink)
@@ -61,5 +62,6 @@ private struct ThemedContentView: View {
         ContentView()
             .tint(themeManager.tintColor(for: colorScheme))
             .environment(\.civitTheme, themeManager.theme(for: colorScheme))
+            .environment(\.civitNsfwBlur, themeManager.nsfwBlurSettings)
     }
 }

@@ -18,12 +18,10 @@ struct ContentFilterSettingsView: View {
             List {
                 Section("NSFW") {
                     nsfwToggle(state: filterState)
-                    if filterState.nsfwFilterLevel != .off {
-                        NsfwBlurSettingsSection(
-                            settings: filterState.nsfwBlurSettings,
-                            onChanged: { viewModel.onNsfwBlurSettingsChanged(settings: $0) }
-                        )
-                    }
+                    NsfwBlurSettingsSection(
+                        settings: filterState.nsfwBlurSettings,
+                        onChanged: { viewModel.onNsfwBlurSettingsChanged(settings: $0) }
+                    )
                 }
                 Section("CivitAI Site") {
                     frontDoorToggle(state: filterState)
@@ -222,7 +220,7 @@ private struct NsfwBlurSettingsSection: View {
                 .font(.civitBodySmall)
                 .foregroundColor(.civitOnSurfaceVariant)
             // swiftlint:disable:next line_length
-            Text("Controls blur strength for NSFW images in the Image Gallery. Tap any blurred image to reveal it temporarily.")
+            Text("Controls blur strength for NSFW thumbnails and gallery images. 100% shows them unblurred; tap a blurred gallery image to reveal it temporarily.")
                 .font(.civitBodySmall)
                 .foregroundColor(.civitOnSurfaceVariant)
             BlurSliderRow(label: "Soft", intensity: Int(settings.softIntensity)) { value in

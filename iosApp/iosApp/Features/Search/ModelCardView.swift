@@ -6,6 +6,7 @@ struct ModelCardView: View {
     var isOwned: Bool = false
     var parallaxOffset: CGFloat = 0
     @Environment(\.civitTheme) private var theme
+    @Environment(\.civitNsfwBlur) private var blurSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -54,7 +55,7 @@ struct ModelCardView: View {
         // Safest static image first (never a video URL); mirrors Android's ModelCardLayout.
         let candidate = model.browseThumbnailCandidates().first
         let urlString = candidate?.thumbnailUrl(width: 450)
-        let blurRadius = ModelCardView.cardBlurRadius(for: candidate?.nsfwLevel)
+        let blurRadius = blurSettings.blurRadius(for: candidate?.nsfwLevel)
         return CivitAsyncImageView(imageUrl: urlString, aspectRatio: 1)
             .blur(radius: blurRadius)
             .clipped()
@@ -65,16 +66,6 @@ struct ModelCardView: View {
                 }
             }
             .parallaxEffect(offset: parallaxOffset)
-    }
-
-    /// Fixed per-level blur for browse cards (matches Android: Mature 16, X 24);
-    /// the gallery blur sliders intentionally do not apply here.
-    static func cardBlurRadius(for level: NsfwLevel?) -> CGFloat {
-        switch level {
-        case .mature: return 16
-        case .x: return 24
-        default: return 0
-        }
     }
 
     private var statsRow: some View {

@@ -10,17 +10,26 @@ final class ThemeManager: ObservableObject {
     @Published var colorSchemeOverride: ColorScheme?
     @Published var customThemePrimary: Color?
     @Published var hasCustomTheme: Bool = false
+    @Published var nsfwBlurSettings = NsfwBlurSettings(softIntensity: 75, matureIntensity: 25, explicitIntensity: 0)
 
     private let observeAccentColorUseCase: ObserveAccentColorUseCase
     private let observeAmoledDarkModeUseCase: ObserveAmoledDarkModeUseCase
     private let observeThemeModeUseCase: ObserveThemeModeUseCase
     private let getActiveThemeUseCase: GetActiveThemeUseCase
+    private let observeNsfwBlurSettingsUseCase: ObserveNsfwBlurSettingsUseCase
 
     init() {
         self.observeAccentColorUseCase = KoinHelper.shared.getObserveAccentColorUseCase()
         self.observeAmoledDarkModeUseCase = KoinHelper.shared.getObserveAmoledDarkModeUseCase()
         self.observeThemeModeUseCase = KoinHelper.shared.getObserveThemeModeUseCase()
         self.getActiveThemeUseCase = KoinHelper.shared.getGetActiveThemeUseCase()
+        self.observeNsfwBlurSettingsUseCase = KoinHelper.shared.getObserveNsfwBlurSettingsUseCase()
+    }
+
+    func observeNsfwBlur() async {
+        for await value in observeNsfwBlurSettingsUseCase.invoke() {
+            nsfwBlurSettings = value
+        }
     }
 
     func observeAccentColor() async {

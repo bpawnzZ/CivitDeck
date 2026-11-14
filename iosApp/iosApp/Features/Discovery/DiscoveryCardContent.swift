@@ -5,6 +5,7 @@ private let imageAspectRatio: CGFloat = 0.75
 
 struct DiscoveryCardContent: View {
     let model: Model
+    @Environment(\.civitNsfwBlur) private var blurSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -20,7 +21,7 @@ struct DiscoveryCardContent: View {
         // Safest static image first (never a video URL); mirrors Android's card behavior.
         let candidate = model.browseThumbnailCandidates().first
         let urlString = candidate?.thumbnailUrl(width: 450)
-        let blurRadius = ModelCardView.cardBlurRadius(for: candidate?.nsfwLevel)
+        let blurRadius = blurSettings.blurRadius(for: candidate?.nsfwLevel)
         return CivitAsyncImageView(imageUrl: urlString, aspectRatio: imageAspectRatio)
             .blur(radius: blurRadius)
             .clipped()

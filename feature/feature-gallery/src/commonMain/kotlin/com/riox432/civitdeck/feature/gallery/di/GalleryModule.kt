@@ -12,5 +12,5 @@ val galleryModule = module {
     single<ImageRepository> { ImageRepositoryImpl(get(), get(), get()) }
     factory { GetImagesUseCase(get()) }
     viewModel { params -> ImageGalleryViewModel(params.get(), get(), get(), get(), get(), get()) }
-    viewModel { params -> MediaFeedViewModel(params.get(), get(), get()) }
+    viewModel { params -> MediaFeedViewModel(params.get(), get(), get(), get()) }
 }

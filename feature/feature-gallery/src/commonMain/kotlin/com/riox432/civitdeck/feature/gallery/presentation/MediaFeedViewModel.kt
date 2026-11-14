@@ -9,6 +9,7 @@ import com.riox432.civitdeck.domain.model.SortOrder
 import com.riox432.civitdeck.domain.model.TimePeriod
 import com.riox432.civitdeck.domain.model.imagesQueryMaxLevel
 import com.riox432.civitdeck.domain.usecase.ObserveNsfwFilterUseCase
+import com.riox432.civitdeck.domain.usecase.SetNsfwFilterUseCase
 import com.riox432.civitdeck.domain.util.LoadResult
 import com.riox432.civitdeck.domain.util.PaginatedLoader
 import com.riox432.civitdeck.domain.util.UiLoadingState
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 
 data class MediaFeedUiState(
     val items: List<Image> = emptyList(),
-    val selectedSort: SortOrder = SortOrder.HighestRated,
+    val selectedSort: SortOrder = SortOrder.Newest,
     val selectedPeriod: TimePeriod = TimePeriod.AllTime,
     val mediaType: MediaContentType = MediaContentType.IMAGE,
     val nsfwFilterLevel: NsfwFilterLevel = NsfwFilterLevel.Off,
@@ -39,6 +40,7 @@ class MediaFeedViewModel(
     private val mediaType: MediaContentType,
     private val getImagesUseCase: GetImagesUseCase,
     private val observeNsfwFilterUseCase: ObserveNsfwFilterUseCase,
+    private val setNsfwFilterUseCase: SetNsfwFilterUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MediaFeedUiState(mediaType = mediaType))
@@ -80,6 +82,10 @@ class MediaFeedViewModel(
 
     fun loadFirstPage() {
         paginatedLoader.loadFirst()
+    }
+
+    fun setNsfwFilter(level: NsfwFilterLevel) {
+        viewModelScope.launch { setNsfwFilterUseCase(level) }
     }
 
     fun loadMore() {

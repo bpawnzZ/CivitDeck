@@ -11,6 +11,7 @@ import com.riox432.civitdeck.domain.model.TimePeriod
 import com.riox432.civitdeck.domain.repository.ContentFilterPreferencesRepository
 import com.riox432.civitdeck.domain.repository.ImageRepository
 import com.riox432.civitdeck.domain.usecase.ObserveNsfwFilterUseCase
+import com.riox432.civitdeck.domain.usecase.SetNsfwFilterUseCase
 import com.riox432.civitdeck.feature.gallery.domain.usecase.GetImagesUseCase
 import com.riox432.civitdeck.testing.FakeContentFilterPreferencesRepository
 import com.riox432.civitdeck.testing.testImage
@@ -78,7 +79,17 @@ class MediaFeedViewModelTest {
         mediaType = mediaType,
         getImagesUseCase = GetImagesUseCase(imageRepo),
         observeNsfwFilterUseCase = ObserveNsfwFilterUseCase(prefsRepo),
+        setNsfwFilterUseCase = SetNsfwFilterUseCase(prefsRepo),
     )
+
+    @Test
+    fun defaults_to_newest_like_the_site() = runTest(testDispatcher) {
+        val repo = FakeImageRepo(listOf(PaginatedResult(listOf(testImage(1L)), PageMetadata(nextCursor = null, nextPage = null))))
+        val vm = createVm(repo)
+        advanceUntilIdle()
+
+        assertEquals(SortOrder.Newest, vm.uiState.value.selectedSort)
+    }
 
     @Test
     fun loadFirstPage_populates_items_and_reports_hasMore() = runTest(testDispatcher) {

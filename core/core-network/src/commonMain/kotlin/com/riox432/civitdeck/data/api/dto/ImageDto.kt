@@ -37,6 +37,7 @@ data class ImageDto(
     val meta: ImageMetaDto? = null,
     val type: String? = null,
     val thumbnail: ImageThumbnailDto? = null,
+    val baseModel: String? = null,
 )
 
 @Serializable

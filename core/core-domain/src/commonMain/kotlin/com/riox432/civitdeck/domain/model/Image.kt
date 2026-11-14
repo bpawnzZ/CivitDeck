@@ -12,9 +12,10 @@ data class Image(
     val postId: Long?,
     val username: String?,
     val stats: ImageStats?,
-    val meta: ImageGenerationMeta?,
+    val meta: ImageGenerationMeta? = null,
     val contentType: MediaContentType = MediaContentType.IMAGE,
     val thumbnailUrl: String? = null,
+    val baseModel: String? = null,
 )
 
 data class ImageStats(

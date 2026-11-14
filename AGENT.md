@@ -34,6 +34,9 @@ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk      # jdk17-openjdk; jre17 fails 
 - **New Swift files must be registered by hand** in `iosApp/iosApp.xcodeproj/project.pbxproj`
   (PBXBuildFile + PBXFileReference + group child + Sources phase) — the project has no
   file-system-synchronized groups. A missed entry is a compile error, not a silent skip.
+- **Kotlin types reach Swift under a module prefix** (`Core_domainSortOrder`, `Feature_galleryImageGalleryViewModel`).
+  Do not call them by their bare names: add a `typealias` to `iosApp/iosApp/SharedTypeAliases.swift`. A missing
+  alias compiles in Kotlin and fails only on the macOS runner, costing a CI cycle.
 - **Never nest `NavigationStack`**: a pushed destination that owns its own stack resets the parent
   path (the Collections screen bounced back for exactly this reason). Use `NavigationLink(value:)`
   with destinations registered on the stack that already exists.

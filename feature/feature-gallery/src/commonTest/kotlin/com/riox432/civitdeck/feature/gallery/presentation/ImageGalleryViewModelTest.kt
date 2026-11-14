@@ -61,6 +61,7 @@ class ImageGalleryViewModelTest {
             nsfwLevel: NsfwLevel?,
             limit: Int?,
             cursor: String?,
+            mediaType: String?,
         ): PaginatedResult<Image> {
             val result = pages.getOrElse(callCount) { pages.last() }
             callCount++
@@ -144,6 +145,7 @@ class ImageGalleryViewModelTest {
                 nsfwLevel: NsfwLevel?,
                 limit: Int?,
                 cursor: String?,
+                mediaType: String?,
             ) = error("API error")
         }
         val savedPromptRepo = FakeSavedPromptRepository()

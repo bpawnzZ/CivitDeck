@@ -30,11 +30,13 @@ class ImageUseCasesTest {
             nsfwLevel: NsfwLevel?,
             limit: Int?,
             cursor: String?,
+            mediaType: String?,
         ): PaginatedResult<Image> {
             lastArgs = mapOf(
                 "modelId" to modelId, "modelVersionId" to modelVersionId,
                 "username" to username, "sort" to sort, "period" to period,
                 "nsfwLevel" to nsfwLevel, "limit" to limit, "cursor" to cursor,
+                "mediaType" to mediaType,
             )
             return result
         }

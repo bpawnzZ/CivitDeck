@@ -33,6 +33,9 @@ Thumbs.db
 
 ## AI Tools
 .claude/settings.local.json
+.hermes/
+.kilocode/
+.codex/
 
 ## Signing
 *.jks

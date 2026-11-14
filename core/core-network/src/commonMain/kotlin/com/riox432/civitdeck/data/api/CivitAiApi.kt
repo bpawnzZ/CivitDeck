@@ -1,5 +1,7 @@
 package com.riox432.civitdeck.data.api
 
+import com.riox432.civitdeck.data.api.dto.ArticleDto
+import com.riox432.civitdeck.data.api.dto.ArticleListResponse
 import com.riox432.civitdeck.data.api.dto.CreatorListResponse
 import com.riox432.civitdeck.data.api.dto.EnumsResponse
 import com.riox432.civitdeck.data.api.dto.ImageListResponse
@@ -98,6 +100,7 @@ class CivitAiApi(
         nsfw: String? = null,
         limit: Int? = null,
         cursor: String? = null,
+        type: String? = null,
     ): ImageListResponse {
         return client.get("${endpoints.apiBaseUrl}/images") {
             modelId?.let { parameter("modelId", it) }
@@ -108,6 +111,7 @@ class CivitAiApi(
             nsfw?.let { parameter("nsfw", it) }
             limit?.let { parameter("limit", it) }
             cursor?.let { parameter("cursor", it) }
+            type?.let { parameter("type", it) }
             // /images omits `meta` (prompt, sampler, seed) unless explicitly requested.
             parameter("withMeta", true)
         }.body()
@@ -149,5 +153,21 @@ class CivitAiApi(
         return client.get("${endpoints.apiBaseUrl}/me") {
             header(HttpHeaders.Authorization, "Bearer $apiKey")
         }.body()
+    }
+
+    suspend fun getArticles(
+        sort: String? = null,
+        limit: Int? = null,
+        cursor: String? = null,
+    ): ArticleListResponse {
+        return client.get("${endpoints.apiBaseUrl}/articles") {
+            sort?.let { parameter("sort", it) }
+            limit?.let { parameter("limit", it) }
+            cursor?.let { parameter("cursor", it) }
+        }.body()
+    }
+
+    suspend fun getArticle(id: Long): ArticleDto {
+        return client.get("${endpoints.apiBaseUrl}/articles/$id").body()
     }
 }

@@ -27,42 +27,31 @@ class ImageRepositoryImpl(
         nsfwLevel: NsfwLevel?,
         limit: Int?,
         cursor: String?,
+        mediaType: String?,
     ): PaginatedResult<Image> {
         val cacheKey = buildCacheKey(
             "images",
             modelId?.toString(),
             modelVersionId?.toString(),
             username,
-            sort?.let {
-                when (it) {
-                    SortOrder.HighestRated -> "Most Reactions"
-                    SortOrder.MostDownloaded -> "Most Comments"
-                    SortOrder.Newest -> "Newest"
-                    SortOrder.Quality -> "Most Reactions"
-                }
-            },
+            sort?.toApiValue(),
             period?.name,
             nsfwLevel?.name,
             limit?.toString(),
             cursor,
+            mediaType,
         )
         return try {
             val response = api.getImages(
                 modelId = modelId,
                 modelVersionId = modelVersionId,
                 username = username,
-                sort = sort?.let {
-                    when (it) {
-                        SortOrder.HighestRated -> "Most Reactions"
-                        SortOrder.MostDownloaded -> "Most Comments"
-                        SortOrder.Newest -> "Newest"
-                        SortOrder.Quality -> "Most Reactions"
-                    }
-                },
+                sort = sort?.toApiValue(),
                 period = period?.name,
                 nsfw = nsfwLevel?.name,
                 limit = limit,
                 cursor = cursor,
+                type = mediaType,
             )
             localCache.putCache(
                 cacheKey,
@@ -89,3 +78,10 @@ class ImageRepositoryImpl(
 
 private fun buildCacheKey(vararg parts: String?): String =
     parts.filterNotNull().joinToString(":")
+
+private fun SortOrder.toApiValue(): String = when (this) {
+    SortOrder.HighestRated -> "Most Reactions"
+    SortOrder.MostDownloaded -> "Most Comments"
+    SortOrder.Newest -> "Newest"
+    SortOrder.Quality -> "Most Reactions"
+}

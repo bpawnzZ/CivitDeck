@@ -36,6 +36,14 @@ data class ImageDto(
     val stats: ImageStatsDto? = null,
     val meta: ImageMetaDto? = null,
     val type: String? = null,
+    val thumbnail: ImageThumbnailDto? = null,
+)
+
+@Serializable
+data class ImageThumbnailDto(
+    val url: String = "",
+    val width: Int = 0,
+    val height: Int = 0,
 )
 
 @Serializable

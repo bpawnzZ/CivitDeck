@@ -130,6 +130,7 @@ fun ImageDto.toDomain(): Image = Image(
     stats = stats?.toDomain(),
     meta = meta?.toDomain(),
     contentType = MediaContentType.fromApiType(type) ?: MediaContentType.fromUrl(url),
+    thumbnailUrl = thumbnail?.url,
 )
 
 fun ImageStatsDto.toDomain(): ImageStats = ImageStats(

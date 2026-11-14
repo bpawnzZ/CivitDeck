@@ -16,5 +16,6 @@ interface ImageRepository {
         nsfwLevel: NsfwLevel? = null,
         limit: Int? = null,
         cursor: String? = null,
+        mediaType: String? = null,
     ): PaginatedResult<Image>
 }

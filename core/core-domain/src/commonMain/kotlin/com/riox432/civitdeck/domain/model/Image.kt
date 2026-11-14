@@ -14,6 +14,7 @@ data class Image(
     val stats: ImageStats?,
     val meta: ImageGenerationMeta?,
     val contentType: MediaContentType = MediaContentType.IMAGE,
+    val thumbnailUrl: String? = null,
 )
 
 data class ImageStats(

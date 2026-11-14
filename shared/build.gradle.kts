@@ -28,6 +28,7 @@ kotlin {
             implementation(project(":feature:feature-prompts"))
             implementation(project(":feature:feature-gallery"))
             implementation(project(":feature:feature-collections"))
+            implementation(project(":feature:feature-articles"))
             implementation(project(":feature:feature-detail"))
             implementation(project(":feature:feature-comfyui"))
             implementation(project(":feature:feature-search"))

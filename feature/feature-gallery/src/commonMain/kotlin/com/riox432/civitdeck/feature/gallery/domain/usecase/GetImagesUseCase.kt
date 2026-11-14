@@ -17,6 +17,7 @@ class GetImagesUseCase(private val repository: ImageRepository) {
         nsfwLevel: NsfwLevel? = null,
         limit: Int? = null,
         cursor: String? = null,
+        mediaType: String? = null,
     ): PaginatedResult<Image> = repository.getImages(
         modelId = modelId,
         modelVersionId = modelVersionId,
@@ -26,5 +27,6 @@ class GetImagesUseCase(private val repository: ImageRepository) {
         nsfwLevel = nsfwLevel,
         limit = limit,
         cursor = cursor,
+        mediaType = mediaType,
     )
 }

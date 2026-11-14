@@ -6,6 +6,7 @@ import com.riox432.civitdeck.domain.repository.AuthPreferencesRepository
 import com.riox432.civitdeck.domain.usecase.ObserveFrontDoorModeUseCase
 import com.riox432.civitdeck.domain.util.ApplicationScope
 import com.riox432.civitdeck.domain.util.CivitAiFrontDoor
+import com.riox432.civitdeck.feature.articles.di.articlesModule
 import com.riox432.civitdeck.feature.collections.di.collectionsModule
 import com.riox432.civitdeck.feature.comfyui.di.comfyuiModule
 import com.riox432.civitdeck.feature.comfyui.di.comfyuiPlatformModule
@@ -42,6 +43,7 @@ val sharedModules: List<Module>
         promptsModule,
         galleryModule,
         collectionsModule,
+        articlesModule,
         detailModule,
         comfyuiModule,
         searchModule,
